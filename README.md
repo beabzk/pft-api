@@ -75,6 +75,52 @@ The API should now be running at `http://127.0.0.1:8000/`.
 
 ---
 
+## Usage
+
+### Authentication & JWT
+
+1. Register or log in to get your JWT access and refresh tokens:
+        - `POST /api/auth/token/` with JSON body `{ "username": "<your_username>", "password": "<your_password>" }`
+        - The response will include `access` and `refresh` tokens.
+2. For all protected endpoints, add this header:
+        - `Authorization: Bearer <access_token>`
+
+### Example: Using curl
+
+```sh
+# Get JWT token
+curl -X POST http://127.0.0.1:8000/api/auth/token/ \
+    -H "Content-Type: application/json" \
+    -d '{"username": "youruser", "password": "yourpass"}'
+
+# Use the access token to create a category
+curl -X POST http://127.0.0.1:8000/api/categories/ \
+    -H "Authorization: Bearer <access_token>" \
+    -H "Content-Type: application/json" \
+    -d '{"name": "Groceries"}'
+
+# List your transactions
+curl -H "Authorization: Bearer <access_token>" http://127.0.0.1:8000/api/transactions/
+```
+
+### Example: Using Postman
+
+1. Obtain your JWT access token as above.
+2. In your request, go to the **Authorization** tab, set type to **Bearer Token**, and paste your access token.
+3. For POST/PUT, set the body to **raw** and **JSON**.
+4. Example body for creating a transaction:
+        ```json
+        {
+            "category": 1,
+            "amount": 50.00,
+            "transaction_type": "expense",
+            "date": "2025-09-03",
+            "description": "Weekly groceries"
+        }
+        ```
+
+---
+
 ## API Endpoints
 
 All protected routes require an `Authorization: Bearer <access_token>` header.

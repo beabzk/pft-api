@@ -11,9 +11,16 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env files (project root, then repo root)
+# This ensures DJANGO_SECRET_KEY is found whether .env is in pft_project/ or the repo root
+load_dotenv(BASE_DIR / '.env')
+load_dotenv(BASE_DIR.parent / '.env', override=False)
 
 
 # Quick-start development settings - unsuitable for production
@@ -48,6 +55,7 @@ INSTALLED_APPS = [
 
     # Your local apps
     'users',
+    'transactions',
 ]
 
 MIDDLEWARE = [
