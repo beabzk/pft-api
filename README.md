@@ -85,22 +85,52 @@ The API should now be running at `http://127.0.0.1:8000/`.
 2. For all protected endpoints, add this header:
         - `Authorization: Bearer <access_token>`
 
+---
+
 ### Example: Using curl
 
 ```sh
-# Get JWT token
+# 1. Get JWT token
 curl -X POST http://127.0.0.1:8000/api/auth/token/ \
     -H "Content-Type: application/json" \
     -d '{"username": "youruser", "password": "yourpass"}'
 
-# Use the access token to create a category
+# 2. Create a category
 curl -X POST http://127.0.0.1:8000/api/categories/ \
     -H "Authorization: Bearer <access_token>" \
     -H "Content-Type: application/json" \
     -d '{"name": "Groceries"}'
 
-# List your transactions
+# 3. List all categories
+curl -H "Authorization: Bearer <access_token>" http://127.0.0.1:8000/api/categories/
+
+# 4. Create a transaction
+curl -X POST http://127.0.0.1:8000/api/transactions/ \
+    -H "Authorization: Bearer <access_token>" \
+    -H "Content-Type: application/json" \
+    -d '{"category": 1, "amount": 50.00, "transaction_type": "expense", "date": "2025-09-03", "description": "Weekly groceries"}'
+
+# 5. List all transactions
 curl -H "Authorization: Bearer <access_token>" http://127.0.0.1:8000/api/transactions/
+
+# 6. Filter transactions by category
+curl -H "Authorization: Bearer <access_token>" "http://127.0.0.1:8000/api/transactions/?category=1"
+
+# 7. Update a transaction
+curl -X PATCH http://127.0.0.1:8000/api/transactions/2/ \
+    -H "Authorization: Bearer <access_token>" \
+    -H "Content-Type: application/json" \
+    -d '{"amount": 60.00}'
+
+# 8. Delete a transaction
+curl -X DELETE http://127.0.0.1:8000/api/transactions/2/ \
+    -H "Authorization: Bearer <access_token>"
+
+# 9. Get a monthly report (current month)
+curl -H "Authorization: Bearer <access_token>" http://127.0.0.1:8000/api/reports/monthly-summary/
+
+# 10. Get a report for a specific month/year
+curl -H "Authorization: Bearer <access_token>" "http://127.0.0.1:8000/api/reports/monthly-summary/?year=2025&month=1"
 ```
 
 ### Example: Using Postman
@@ -118,6 +148,7 @@ curl -H "Authorization: Bearer <access_token>" http://127.0.0.1:8000/api/transac
             "description": "Weekly groceries"
         }
         ```
+5. To get a report for a specific month, add `year` and `month` as query parameters.
 
 ---
 

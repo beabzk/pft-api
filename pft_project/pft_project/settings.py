@@ -53,9 +53,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
 
-    # Your local apps
+    # Local apps
     'users',
     'transactions',
+    'reports',
 ]
 
 MIDDLEWARE = [
